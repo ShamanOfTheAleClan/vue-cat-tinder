@@ -1,6 +1,9 @@
 <template>
   <div class="app">
 
+    <!-- AppNav component missing -->
+    <router-view></router-view>
+
   </div>
 </template>
 

@@ -4,7 +4,16 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 const routes = [
-
+  {
+    path: '/',
+    name: 'Matching',
+    component: () => import('@/views/Matching')
+  },
+  {
+    path: '/Profile',
+    name: 'Profile',
+    component: () => import('@/views/Profile')
+  }
 ]
 
 const router = new VueRouter({

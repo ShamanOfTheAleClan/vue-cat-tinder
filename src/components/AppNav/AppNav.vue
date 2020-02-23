@@ -1,16 +1,27 @@
 <template>
   <nav
-    class="nav"
+    :class="classList"
   >
   <slot />
   </nav>
 </template>
 
 <script>
-// import smth from '@/components/AppNav/children/'
+import { mapGetters } from 'vuex'
 
 export default {
-  name: 'AppNav'
+  name: 'AppNav',
+  computed: {
+    ...mapGetters({
+      viewingKittyProfile: 'viewingKittyProfile'
+    }),
+    classList () {
+      return [
+        'nav',
+        { 'nav--hidden': this.viewingKittyProfile }
+      ]
+    }
+  }
 }
 </script>
 
@@ -20,5 +31,9 @@ export default {
     justify-content: space-between;
     border-bottom: 2px #eee solid;
     padding: 10px 5px 5px 5px ;
+
+    &--hidden {
+      height: 0;
+    }
   }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="matching">
 
-    <AppNav>
+    <AppNav v-if="$route.path !== kittyProfileURL">
       <AppNavBtn
         href=""
         logo="profile"
@@ -49,9 +49,15 @@ import Matcher from '@/components/Matcher/Matcher'
 import MatcherInfo from '@/components/Matcher/children/MatcherInfo'
 import MatchingNav from '@/components/MatchingNav/MatchingNav'
 import MatchingNavBtn from '@/components/MatchingNav/children/MatchingNavBtn'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Matching',
+  computed: {
+    ...mapGetters({
+      kittyProfileURL: 'kittyProfileURL'
+    })
+  },
   components: {
     AppNav,
     AppNavBtn,

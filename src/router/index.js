@@ -11,8 +11,8 @@ const routes = [
     children: [
       {
         path: '/kitty',
-        name: 'MatchersProfile',
-        component: () => import('@/views/MatchersProfile')
+        name: 'MatchersBio',
+        component: () => import('@/views/MatchersBio')
       }
     ]
   },

@@ -12,7 +12,6 @@
       <p class="matcher__fun-fact">
         {{ funFact }}
       </p>
-  <!-- idet component, kur bus visa bio -->
   <slot />
   </div>
 </template>
@@ -39,7 +38,7 @@ export default {
 
 <style lang="scss">
   .matcher {
-    color: #444;
+    color: #555;
 
     &__info {
       padding: 10px 20px;
@@ -75,6 +74,7 @@ export default {
       font-weight: 500;
       font-size: 16px;
       margin-bottom: 10px;
+      color: #888;
     }
   }
 </style>

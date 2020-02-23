@@ -12,6 +12,11 @@ import { mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'App',
+  data () {
+    return {
+      route: console.log(this)
+    }
+  },
   computed: {
     ...mapGetters({
     })

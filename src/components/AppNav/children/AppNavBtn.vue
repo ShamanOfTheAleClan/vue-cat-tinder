@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{name: href}" class="link">
+  <router-link :to="{name: href}" class="link link--nav">
     <div :class="classList"></div>
   </router-link>
 </template>
@@ -35,14 +35,18 @@ export default {
 
 <style lang="scss">
 .link {
-  width: 50px;
+  text-decoration: none;
+
+  &--nav {
+    width: 50px;
+  }
 }
 
 .link-logo {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  height: 35px;
+  height: 40px;
   width: 100%;
 
   &__tinder {

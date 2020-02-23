@@ -1,5 +1,6 @@
 <template>
-
+  <div class="matcher__bio">
+  </div>
 </template>
 
 <script>

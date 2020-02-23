@@ -7,7 +7,14 @@ const routes = [
   {
     path: '/',
     name: 'Matching',
-    component: () => import('@/views/Matching')
+    component: () => import('@/views/Matching'),
+    children: [
+      {
+        path: '/kitty',
+        name: 'MatchersProfile',
+        component: () => import('@/views/MatchersProfile')
+      }
+    ]
   },
   {
     path: '/Profile',

@@ -19,10 +19,26 @@
 
     </AppNav>
 
-    <Matcher></Matcher>
+    <Matcher
+      profilePic="cat.jpg"
+    >
+      <MatcherInfo
+        name="Kitty"
+        :age="2"
+        funFact="You both like napping"
+      >
+        <router-view></router-view>
+      </MatcherInfo>
+    </Matcher>
 
-    <!-- MatchingNavigation component missing -->
-    <!-- <MatchingNavigation></MatchingNavigation> -->
+    <MatchingNav>
+      <MatchingNavBtn
+        btnType="dislike"
+      ></MatchingNavBtn>
+      <MatchingNavBtn
+        btnType="like"
+      ></MatchingNavBtn>
+    </MatchingNav>
   </div>
 </template>
 
@@ -30,13 +46,19 @@
 import AppNav from '@/components/AppNav/AppNav'
 import AppNavBtn from '@/components/AppNav/children/AppNavBtn'
 import Matcher from '@/components/Matcher/Matcher'
+import MatcherInfo from '@/components/Matcher/children/MatcherInfo'
+import MatchingNav from '@/components/MatchingNav/MatchingNav'
+import MatchingNavBtn from '@/components/MatchingNav/children/MatchingNavBtn'
 
 export default {
   name: 'Matching',
   components: {
     AppNav,
     AppNavBtn,
-    Matcher
+    Matcher,
+    MatcherInfo,
+    MatchingNav,
+    MatchingNavBtn
   }
 }
 </script>

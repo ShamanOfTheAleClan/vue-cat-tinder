@@ -18,7 +18,7 @@ export default {
   .nav {
     display: flex;
     justify-content: space-between;
-    border-bottom: 2px #f3f3f3 solid;
-    padding: 5px;
+    border-bottom: 2px #eee solid;
+    padding: 10px 5px 5px 5px ;
   }
 </style>

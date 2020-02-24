@@ -4,8 +4,9 @@
       v-if="itsAMatch"
     ></ItsAMatchScreen>
     <!-- AppNav component missing -->
-    <router-view></router-view>
-
+    <keep-alive include="Matching">
+      <router-view></router-view>
+    </keep-alive>
   </div>
 </template>
 

@@ -1,6 +1,8 @@
 <template>
-  <div class="app">
-
+  <div :class="classList">
+    <ItsAMatchScreen
+      v-if="itsAMatch"
+    ></ItsAMatchScreen>
     <!-- AppNav component missing -->
     <router-view></router-view>
 
@@ -9,6 +11,7 @@
 
 <script>
 import { mapGetters, mapMutations, mapActions } from 'vuex'
+import ItsAMatchScreen from '@/components/ItsAMatchScreen/ItsAMatchScreen'
 
 export default {
   name: 'App',
@@ -17,9 +20,18 @@ export default {
       route: console.log(this)
     }
   },
+  components: {
+    ItsAMatchScreen
+  },
   computed: {
     ...mapGetters({
-    })
+      itsAMatch: 'itsAMatch'
+    }),
+    classList () {
+      return [
+        'app'
+      ]
+    }
   },
   methods: {
     ...mapMutations({
@@ -33,5 +45,4 @@ export default {
 </script>
 
 <style>
-
 </style>

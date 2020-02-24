@@ -1,5 +1,8 @@
 <template>
-  <div :class="classList"></div>
+  <div
+    :class="classList"
+    @click='onClick'
+  ></div>
 </template>
 
 <script>
@@ -30,6 +33,11 @@ export default {
           'dislike'
         ].indexOf(value) !== -1
       }
+    }
+  },
+  methods: {
+    onClick (event) {
+      this.$emit('click', event)
     }
   }
 }
@@ -79,5 +87,6 @@ export default {
     background-color: #e76e54;
     background-image: url('../../../assets/images/neow--inverted.svg');
     box-shadow: 1px 1px 5px 0px rgb(161, 77, 59);
+    margin-right: 100px;
   }
 </style>

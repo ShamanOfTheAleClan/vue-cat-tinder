@@ -1,5 +1,5 @@
 <template>
-  <div class="matching">
+  <div :class="classList">
 
     <AppNav v-if="$route.path !== kittyProfileURL">
       <AppNavBtn
@@ -20,11 +20,12 @@
     </AppNav>
 
     <Matcher
-      profilePic="cat.jpg"
+      :profilePic="cats[catIndex].url"
+      v-if="!isFetching"
     >
       <MatcherInfo
-        name="Kitty"
-        :age="2"
+        :name="cats[catIndex].breeds[0].name"
+        :age="cats[catIndex].age"
         funFact="You both like napping"
       >
         <router-view></router-view>
@@ -34,9 +35,11 @@
     <MatchingNav>
       <MatchingNavBtn
         btnType="dislike"
+        @click='judgeCat(false)'
       ></MatchingNavBtn>
       <MatchingNavBtn
         btnType="like"
+        @click='judgeCat(true)'
       ></MatchingNavBtn>
     </MatchingNav>
   </div>
@@ -49,14 +52,29 @@ import Matcher from '@/components/Matcher/Matcher'
 import MatcherInfo from '@/components/Matcher/children/MatcherInfo'
 import MatchingNav from '@/components/MatchingNav/MatchingNav'
 import MatchingNavBtn from '@/components/MatchingNav/children/MatchingNavBtn'
-import { mapGetters } from 'vuex'
+
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'Matching',
+  created () {
+    this.getPussies()
+  },
   computed: {
     ...mapGetters({
-      kittyProfileURL: 'kittyProfileURL'
-    })
+      kittyProfileURL: 'kittyProfileURL',
+      cats: 'cats',
+      catIndex: 'catIndex',
+      isFetching: 'isFetching',
+      recentMatch: 'recentMatch',
+      itsAMatch: 'itsAMatch'
+    }),
+    classList () {
+      return [
+        'matching',
+        { 'matching--blurred': this.itsAMatch }
+      ]
+    }
   },
   components: {
     AppNav,
@@ -65,9 +83,21 @@ export default {
     MatcherInfo,
     MatchingNav,
     MatchingNavBtn
+  },
+  methods: {
+    ...mapActions({
+      getPussies: 'getPussies',
+      judgeCat: 'judgeCat'
+    }),
+    randomAge () {
+      return Math.floor(Math.random() * Math.floor(10) + 1)
+    }
   }
 }
 </script>
 
-<style>
+<style lang="scss">
+  .matching--blurred {
+    filter: blur(20px);
+  }
 </style>

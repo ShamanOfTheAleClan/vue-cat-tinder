@@ -1,5 +1,8 @@
 <template>
-  <nav :class="classList">
+  <nav
+    :class="classList"
+    v-if="!itsAMatch"
+  >
     <slot />
   </nav>
 </template>
@@ -11,7 +14,8 @@ export default {
   name: 'MatchingNav',
   computed: {
     ...mapGetters({
-      kittyProfileURL: 'kittyProfileURL'
+      kittyProfileURL: 'kittyProfileURL',
+      itsAMatch: 'itsAMatch'
     }),
     classList () {
       return [
@@ -36,7 +40,7 @@ export default {
     bottom: 0;
     left: 0;
     right: 0;
-
+    padding-bottom: 20px;
     }
 
     &--inverted {
@@ -47,7 +51,7 @@ export default {
       right: 0;
       left: 0;
       border-bottom: none;
-      justify-content: space-evenly;
+      justify-content: center;
       padding-bottom: 20px;
       box-shadow: 0px 20px 20px 37px rgba(255, 255, 255, 0.75);
     }

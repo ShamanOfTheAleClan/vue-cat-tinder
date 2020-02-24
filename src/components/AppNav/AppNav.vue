@@ -1,27 +1,14 @@
 <template>
   <nav
-    :class="classList"
+    class="nav"
   >
   <slot />
   </nav>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
-  name: 'AppNav',
-  computed: {
-    ...mapGetters({
-      viewingKittyProfile: 'viewingKittyProfile'
-    }),
-    classList () {
-      return [
-        'nav',
-        { 'nav--hidden': this.viewingKittyProfile }
-      ]
-    }
-  }
+  name: 'AppNav'
 }
 </script>
 

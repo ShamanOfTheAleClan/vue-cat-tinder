@@ -1,14 +1,21 @@
 <template>
   <div>
     <div class="line"></div>
-    <p class="matcher__bio">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae commodi minus maiores eveniet ratione sed repellendus? Qui accusamus itaque molestias culpa pariatur suscipit, adipisci illo fugiat tempore quia laboriosam laborum? <br/>
-    In delectus molestias debitis asperiores placeat hic, minus ipsam accusamus neque distinctio eius pariatur corporis veniam quasi fugit amet! Quia placeat fugiat voluptate hic, quis voluptas doloribus corrupti nostrum iusto.</p>
+    <p class="matcher__bio">{{ cats[catIndex].breeds[0].description }}</p>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
-  name: 'MathersBio'
+  name: 'MathersBio',
+  computed: {
+    ...mapGetters({
+      cats: 'cats',
+      catIndex: 'catIndex'
+    })
+  }
 }
 </script>
 

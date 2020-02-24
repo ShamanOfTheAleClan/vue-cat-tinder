@@ -6,7 +6,7 @@
   >
     <section :class="classList1">
       <img
-        :src="require('@/assets/images/' + profilePic)"
+        :src="profilePic"
         :class="classList2"
       >
       <slot />

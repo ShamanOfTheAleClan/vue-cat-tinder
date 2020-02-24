@@ -11,8 +11,12 @@ export default new Vuex.Store({
     cats: [],
     catIndex: undefined,
     isFetching: false,
+    needCats: true,
     itsAMatch: false, // false
-    recentMatch: undefined // undefined
+    recentMatch: undefined, // undefined
+    newMatches: [],
+    matches: [],
+    currentlyChattingWith: undefined
 
   }),
   getters: {
@@ -21,8 +25,12 @@ export default new Vuex.Store({
     cats: state => state.cats,
     catIndex: state => state.catIndex,
     isFetching: state => state.isFetching,
+    needCats: state => state.needCats,
     itsAMatch: state => state.itsAMatch,
-    recentMatch: state => state.recentMatch
+    recentMatch: state => state.recentMatch,
+    newMatches: state => state.newMatches,
+    oldMatches: state => state.matches,
+    currentlyChattingWith: state => state.currentlyChattingWith
   },
   mutations: {
     setProfileToggleLink (state, payload) {
@@ -46,6 +54,9 @@ export default new Vuex.Store({
     setIsFetching (state, payload) {
       state.isFetching = payload
     },
+    setNeedCats (state, payload) {
+      state.needCats = payload
+    },
     setYouLike (state, payload) {
       Vue.set(state.cats[state.catIndex], 'youLike', payload)
     },
@@ -54,20 +65,35 @@ export default new Vuex.Store({
     },
     setRecentMatch (state, payload) {
       state.recentMatch = payload
+    },
+    setNewMatchStatus (state, payload) {
+      Vue.set(state.cats[state.catIndex], 'newMatch', payload)
+    },
+    addToNewMatches (state, payload) {
+      state.newMatches.push(payload)
+    },
+    removeFromNewMatches (state, payload) {
+      state.newMatches
+        .splice(state.newMatches.indexOf(payload), 1)
+    },
+    addToOldMatches (state, payload) {
+      state.matches.push(payload)
+    },
+    setCurrentlyChattingWith (state, payload) {
+      state.currentlyChattingWith = payload
     }
   },
   actions: {
     toggleProfileToggleLink ({ commit }) {
-      if (router.currentRoute.path !== '/kitty') {
-        // commit('setViewingKittyProfile', false)
+      if (router.currentRoute.path === '/') {
         commit('setProfileToggleLink', 'MatchersBio')
       }
       if (router.currentRoute.path === '/kitty') {
-        // commit('setViewingKittyProfile', true)
         commit('setProfileToggleLink', 'Matching')
       }
     },
     async getPussies ({ commit, getters, dispatch }) {
+      if (!getters.needCats) return
       commit('setIsFetching', true)
       await fetch('https://api.thecatapi.com/v1/images/search?limit=10&has_breeds=1', {
         method: 'GET',
@@ -83,6 +109,7 @@ export default new Vuex.Store({
           dispatch('addRandomAge')
           dispatch('forgeCatsAffections')
           commit('setIsFetching', false)
+          commit('setNeedCats', false)
         })
         .catch((error) => {
           commit('setIsFetching', false)
@@ -115,6 +142,7 @@ export default new Vuex.Store({
       } else {
         commit('setYouLike', judgement)
         dispatch('checkMutualAffection', judgement)
+        commit('setNeedCats', true)
         dispatch('getPussies')
       }
     },
@@ -122,8 +150,14 @@ export default new Vuex.Store({
       if (judgement === true &&
         getters.cats[getters.catIndex].likesYou === getters.cats[getters.catIndex].youLike) {
         commit('setRecentMatch', getters.cats[getters.catIndex])
+        commit('setNewMatchStatus', true)
+        commit('addToNewMatches', getters.cats[getters.catIndex])
         commit('setItsAMatch', true)
       }
+    },
+    fromNewMatchesToOld ({ commit }, cat) {
+      commit('addToOldMatches', cat)
+      commit('removeFromNewMatches', cat)
     }
 
   }

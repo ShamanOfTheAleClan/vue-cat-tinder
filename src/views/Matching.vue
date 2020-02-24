@@ -13,7 +13,7 @@
       ></AppNavBtn>
 
       <AppNavBtn
-        href=""
+        href="Matches"
         logo="chat"
       ></AppNavBtn>
 
@@ -88,10 +88,7 @@ export default {
     ...mapActions({
       getPussies: 'getPussies',
       judgeCat: 'judgeCat'
-    }),
-    randomAge () {
-      return Math.floor(Math.random() * Math.floor(10) + 1)
-    }
+    })
   }
 }
 </script>

@@ -3,14 +3,22 @@
     <h1 class="heading1">It's a Match!</h1>
     <p class="text">You and {{ recentMatch.breeds[0].name }} like each other.</p>
     <div class="love-cats">
-      <img class="love-cats__image" src="" alt="">
-      <img class="love-cats__image" :src="recentMatch.url" alt="">
+      <img class="love-cats__image" src="@/assets/images/user.jpg">
+      <img class="love-cats__image" :src="recentMatch.url">
     </div>
 
     <button
       class="button"
+      @click='goToChat'
+    >
+      <router-link
+        :to="{name: 'Chat'}"
+        class="link"
+      >
+        Send Message
+      </router-link>
+    </button>
 
-    >Send Message</button>
     <button
       class="button"
       @click="keepPlaying"
@@ -30,10 +38,15 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setItsAMatch: 'setItsAMatch'
+      setItsAMatch: 'setItsAMatch',
+      setCurrentlyChattingWith: 'setCurrentlyChattingWith'
     }),
     keepPlaying () {
       this.setItsAMatch(false)
+    },
+    goToChat () {
+      this.setItsAMatch(false)
+      this.setCurrentlyChattingWith(this.recentMatch)
     }
   }
 }

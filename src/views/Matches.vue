@@ -50,10 +50,16 @@ import NewMatches from '@/components/NewMatches/NewMatches'
 import SingleNewMatch from '@/components/NewMatches/children/SingleNewMatch'
 import MatchList from '@/components/MatchList/MatchList'
 import SingleMatch from '@/components/MatchList/children/SingleMatch'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'Matches',
+  beforeMount () {
+    this.getMatchesFromServer()
+  },
+  updated () {
+    this.storeMatchToLocalStorage()
+  },
   components: {
     AppNav,
     AppNavBtn,
@@ -66,6 +72,12 @@ export default {
     ...mapGetters({
       oldMatches: 'oldMatches',
       newMatches: 'newMatches'
+    })
+  },
+  methods: {
+    ...mapActions({
+      getMatchesFromServer: 'getMatchesFromServer',
+      storeMatchToLocalStorage: 'storeMatchToLocalStorage'
     })
   }
 }

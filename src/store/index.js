@@ -30,8 +30,10 @@ export default new Vuex.Store({
     recentMatch: state => state.recentMatch,
     newMatches: state => state.newMatches,
     oldMatches: state => state.matches,
-    currentlyChattingWith: state => state.currentlyChattingWith
+    currentlyChattingWith: state => state.currentlyChattingWith,
+    chatMessages: state => state.currentlyChattingWith.chatMessages
   },
+
   mutations: {
     setProfileToggleLink (state, payload) {
       state.profileToggleLink = payload
@@ -45,11 +47,18 @@ export default new Vuex.Store({
     setCatIndex (state, payload) {
       state.catIndex = payload
     },
+    formatCats (state, index) {
+      Vue.set(state.cats[index], 'age', undefined)
+      Vue.set(state.cats[index], 'likesYou', undefined)
+      Vue.set(state.cats[index], 'youLike', undefined)
+      Vue.set(state.cats[index], 'newMatch', undefined)
+      Vue.set(state.cats[index], 'chatMessages', [])
+    },
     addRandomAge (state, { payload, index }) {
-      Vue.set(state.cats[index], 'age', payload)
+      state.cats[index].age = payload
     },
     addAffection (state, { payload, index }) {
-      Vue.set(state.cats[index], 'likesYou', payload)
+      state.cats[index].likesYou = payload
     },
     setIsFetching (state, payload) {
       state.isFetching = payload
@@ -58,7 +67,7 @@ export default new Vuex.Store({
       state.needCats = payload
     },
     setYouLike (state, payload) {
-      Vue.set(state.cats[state.catIndex], 'youLike', payload)
+      state.cats[state.catIndex].youLike = payload
     },
     setItsAMatch (state, payload) {
       state.itsAMatch = payload
@@ -67,7 +76,7 @@ export default new Vuex.Store({
       state.recentMatch = payload
     },
     setNewMatchStatus (state, payload) {
-      Vue.set(state.cats[state.catIndex], 'newMatch', payload)
+      state.cats[state.catIndex].newMatch = payload
     },
     addToNewMatches (state, payload) {
       state.newMatches.push(payload)
@@ -79,9 +88,17 @@ export default new Vuex.Store({
     addToOldMatches (state, payload) {
       state.matches.push(payload)
     },
+    clearMatches (state, payload) {
+      state.matches = []
+      state.newMatches = []
+    },
     setCurrentlyChattingWith (state, payload) {
       state.currentlyChattingWith = payload
+    },
+    addToChatLog (state, payload) {
+      state.currentlyChattingWith.chatMessages.push(payload)
     }
+
   },
   actions: {
     toggleProfileToggleLink ({ commit }) {
@@ -104,8 +121,13 @@ export default new Vuex.Store({
       })
         .then((response) => response.json())
         .then((data) => {
+          console.log(data)
+
           commit('resetCatIndex')
           commit('setCats', data)
+          getters.cats.forEach((e, i) => {
+            commit('formatCats', i)
+          })
           dispatch('addRandomAge')
           dispatch('forgeCatsAffections')
           commit('setIsFetching', false)
@@ -146,18 +168,47 @@ export default new Vuex.Store({
         dispatch('getPussies')
       }
     },
-    checkMutualAffection ({ getters, commit }, judgement) {
+    checkMutualAffection ({ getters, commit, dispatch }, judgement) {
       if (judgement === true &&
         getters.cats[getters.catIndex].likesYou === getters.cats[getters.catIndex].youLike) {
         commit('setRecentMatch', getters.cats[getters.catIndex])
         commit('setNewMatchStatus', true)
         commit('addToNewMatches', getters.cats[getters.catIndex])
         commit('setItsAMatch', true)
+        dispatch('storeMatchToLocalStorage')
       }
     },
     fromNewMatchesToOld ({ commit }, cat) {
       commit('addToOldMatches', cat)
       commit('removeFromNewMatches', cat)
+    },
+    getMatchesFromServer ({ commit }) {
+      // lets assume you're getting them from server
+      // and not from local storage for now
+      const cache = JSON.parse(localStorage.getItem('matches'))
+      if (cache) {
+        commit('clearMatches')
+        for (const cat of cache.newMatches) {
+          commit('addToNewMatches', cat)
+        }
+        for (const cat of cache.oldMatches) {
+          commit('addToOldMatches', cat)
+        }
+      }
+    },
+    storeMatchToLocalStorage ({ getters, commit }) {
+      const matches = {
+        newMatches: [...getters.newMatches],
+        oldMatches: [...getters.oldMatches]
+      }
+      localStorage.setItem('matches', JSON.stringify(matches))
+    },
+    addChatMessageToLog ({ commit }, { sender, msg }) {
+      const payload = {
+        sender: sender,
+        message: msg
+      }
+      commit('addToChatLog', payload)
     }
 
   }

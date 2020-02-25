@@ -3,8 +3,8 @@
     <ItsAMatchScreen
       v-if="itsAMatch"
     ></ItsAMatchScreen>
-    <!-- AppNav component missing -->
-    <keep-alive include="Matching">
+    <keep-alive :include="['Matching', 'Matches']"
+    >
       <router-view></router-view>
     </keep-alive>
   </div>

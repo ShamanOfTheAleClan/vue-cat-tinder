@@ -16,7 +16,19 @@ export default new Vuex.Store({
     recentMatch: undefined, // undefined
     newMatches: [],
     matches: [],
-    currentlyChattingWith: undefined
+    currentlyChattingWith: undefined,
+    catResponse: [
+      'Meow',
+      'Mau',
+      'Purrrr',
+      '...',
+      '*yawns*',
+      '*continues to ignore you*',
+      'Get back to your duties, mortal',
+      'MEOW',
+      '?'
+    ],
+    catIsResponding: false
 
   }),
   getters: {
@@ -31,7 +43,9 @@ export default new Vuex.Store({
     newMatches: state => state.newMatches,
     oldMatches: state => state.matches,
     currentlyChattingWith: state => state.currentlyChattingWith,
-    chatMessages: state => state.currentlyChattingWith.chatMessages
+    chatMessages: state => state.currentlyChattingWith.chatMessages,
+    catResponse: state => state.catResponse,
+    catIsResponding: state => state.catIsResponding
   },
 
   mutations: {
@@ -97,6 +111,9 @@ export default new Vuex.Store({
     },
     addToChatLog (state, payload) {
       state.currentlyChattingWith.chatMessages.push(payload)
+    },
+    setCatIsResponding (state, payload) {
+      state.catIsResponding = payload
     }
 
   },
@@ -196,7 +213,7 @@ export default new Vuex.Store({
         }
       }
     },
-    storeMatchToLocalStorage ({ getters, commit }) {
+    storeMatchToLocalStorage ({ getters }) {
       const matches = {
         newMatches: [...getters.newMatches],
         oldMatches: [...getters.oldMatches]
@@ -206,9 +223,25 @@ export default new Vuex.Store({
     addChatMessageToLog ({ commit }, { sender, msg }) {
       const payload = {
         sender: sender,
-        message: msg
+        message: msg,
+        timeStamp: new Date().getTime()
       }
       commit('addToChatLog', payload)
+    },
+    fakeCatResponse ({ getters, dispatch, commit }) {
+      // fake response within time period of 2s-7s
+      if (!getters.catisResponding) {
+        commit('setCatIsResponding', true)
+        setTimeout(() => {
+          const rng = Math.floor(Math.random() * getters.catResponse.length)
+          dispatch('addChatMessageToLog', {
+            sender: 0,
+            msg: getters.catResponse[rng]
+          })
+          dispatch('storeMatchToLocalStorage')
+          commit('setCatIsResponding', false)
+        }, Math.floor(Math.random() * 5000 + 2000))
+      }
     }
 
   }

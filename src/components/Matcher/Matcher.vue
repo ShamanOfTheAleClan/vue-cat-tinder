@@ -3,7 +3,7 @@
     :to="{name: profileToggleLink}"
     class="link"
     @click.native="toggleProfileToggleLink()"
-  >
+    >
     <section :class="classList1">
       <img
         :src="profilePic"

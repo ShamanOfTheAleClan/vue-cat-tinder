@@ -6,6 +6,7 @@
       :placeholder="placeholder"
       rows="1"
       v-model="messageInput"
+      v-on:keyup.enter="sendMsg()"
     ></textarea>
       <button
         class="button button--send-msg"
@@ -39,15 +40,19 @@ export default {
   methods: {
     ...mapActions({
       addChatMessageToLog: 'addChatMessageToLog',
-      storeMatchToLocalStorage: 'storeMatchToLocalStorage'
+      storeMatchToLocalStorage: 'storeMatchToLocalStorage',
+      fakeCatResponse: 'fakeCatResponse'
     }),
     sendMsg () {
-      this.addChatMessageToLog({
-        sender: 1,
-        msg: this.messageInput
-      })
-      this.storeMatchToLocalStorage()
-      this.messageInput = ''
+      if (this.messageInput) {
+        this.addChatMessageToLog({
+          sender: 1,
+          msg: this.messageInput
+        })
+        this.storeMatchToLocalStorage()
+        this.messageInput = ''
+        this.fakeCatResponse()
+      }
     }
   }
 

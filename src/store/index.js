@@ -86,7 +86,7 @@ export default new Vuex.Store({
         .splice(state.newMatches.indexOf(payload), 1)
     },
     addToOldMatches (state, payload) {
-      state.matches.push(payload)
+      state.matches.unshift(payload)
     },
     clearMatches (state, payload) {
       state.matches = []

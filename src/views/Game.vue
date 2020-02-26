@@ -2,11 +2,12 @@
   <div :class="classList">
 
     <GameCard
-      :profilePic="cats[catIndex].url"
       v-if="!isFetching"
     ></GameCard>
 
-    <GameNav>
+    <GameNav
+      v-if="!isFetching"
+    >
 
       <GameNavBtn
         btnType="dislike"
@@ -33,10 +34,13 @@ export default {
   name: 'Game',
   created () {
     this.getPussies()
+      .then(() => {
+        this.preloadImage()
+      })
   },
+
   computed: {
     ...mapGetters({
-      kittyProfileURL: 'kittyProfileURL',
       cats: 'cats',
       catIndex: 'catIndex',
       isFetching: 'isFetching',
@@ -89,11 +93,25 @@ export default {
         this.setYouLike(judgement)
         this.checkMutualAffection(judgement)
         this.incrementCatIndex()
+        this.preloadImage()
       } else {
         this.setYouLike(judgement)
         this.checkMutualAffection(judgement)
         this.setNeedCats(true)
         this.getPussies()
+          .then(() => {
+            this.preloadImage()
+          })
+      }
+    },
+    preloadImage () {
+      const img1 = new Image()
+      const img2 = new Image()
+      if (this.catIndex < 9) {
+        img1.src = this.cats[this.catIndex + 1].url
+      }
+      if (this.catIndex < 8) {
+        img2.src = this.cats[this.catIndex + 2].url
       }
     }
   }

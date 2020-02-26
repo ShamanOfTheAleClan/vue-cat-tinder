@@ -6,19 +6,19 @@
     >
 
       <img
-        :src="profilePic"
+        :src="cats[catIndex+incrementIndexBy].url"
         :class="classList2"
       >
-      <MatcherInfo
-        :name="cats[catIndex].breeds[0].name"
-        :age="cats[catIndex].age"
+      <GameCardInfo
+        :name="cats[catIndex+incrementIndexBy].breeds[0].name"
+        :age="cats[catIndex+incrementIndexBy].age"
         funFact="You both like napping"
       >
-      </MatcherInfo>
+      </GameCardInfo>
 
-      <MatcherBio
+      <GameCardBio
         v-if="isInProfile"
-      ></MatcherBio>
+      ></GameCardBio>
 
     </section>
 
@@ -26,20 +26,20 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-import MatcherBio from '@/components/molecules/MatcherBio'
-import MatcherInfo from '@/components/molecules/MatcherInfo'
+import GameCardBio from '@/components/molecules/GameCardBio'
+import GameCardInfo from '@/components/molecules/GameCardInfo'
 
 export default {
   name: 'Matcher',
   props: {
-    profilePic: {
-      type: String,
-      default: undefined
+    incrementIndexBy: {
+      type: Number,
+      default: 0
     }
   },
   components: {
-    MatcherBio,
-    MatcherInfo
+    GameCardBio,
+    GameCardInfo
   },
   computed: {
     classList1 () {

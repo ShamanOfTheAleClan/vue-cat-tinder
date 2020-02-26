@@ -9,7 +9,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'MatherBio',
+  name: 'GameCardBio',
   computed: {
     ...mapGetters({
       cats: 'cats',

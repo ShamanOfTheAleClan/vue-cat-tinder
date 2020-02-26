@@ -45,7 +45,7 @@ export default new Vuex.Store({
       state.catIndex = payload
     },
     incrementCatIndex (state) {
-      state.catInex++
+      state.catIndex++
     },
     formatCats (state, index) {
       Vue.set(state.cats[index], 'age', undefined)

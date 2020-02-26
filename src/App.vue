@@ -33,6 +33,10 @@
       btn3ClassExt="chat"
     ></AppNav>
 
+    <AppLoader
+      v-if="isFetching"
+    ></AppLoader>
+
     <ItsAMatchScreen
       v-if="itsAMatch"
     ></ItsAMatchScreen>
@@ -48,6 +52,7 @@
 import { mapGetters } from 'vuex'
 import ItsAMatchScreen from '@/components/organisms/ItsAMatchScreen'
 import AppNav from '@/components/organisms/AppNav'
+import AppLoader from '@/components/atoms/AppLoader'
 
 export default {
   name: 'App',
@@ -58,12 +63,14 @@ export default {
   },
   components: {
     ItsAMatchScreen,
-    AppNav
+    AppNav,
+    AppLoader
   },
   computed: {
     ...mapGetters({
       itsAMatch: 'itsAMatch',
-      currentlyChattingWith: 'currentlyChattingWith'
+      currentlyChattingWith: 'currentlyChattingWith',
+      isFetching: 'isFetching'
     }),
     currentPath () {
       return this.$route.path

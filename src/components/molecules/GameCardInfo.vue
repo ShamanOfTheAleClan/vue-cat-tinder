@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: 'MatcherInfo',
+  name: 'GameCardInfo',
   props: {
     name: {
       type: String,

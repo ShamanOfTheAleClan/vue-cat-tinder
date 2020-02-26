@@ -36,9 +36,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .matcher {
-    color: #555;
 
     &__info {
       padding: 10px 20px;

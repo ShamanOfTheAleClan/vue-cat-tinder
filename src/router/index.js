@@ -6,20 +6,8 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Matching',
-    component: () => import('@/views/Matching'),
-    children: [
-      {
-        path: '/kitty',
-        name: 'MatchersBio',
-        component: () => import('@/views/MatchersBio')
-      }
-    ]
-  },
-  {
-    path: '/Profile',
-    name: 'Profile',
-    component: () => import('@/views/Profile')
+    name: 'Game',
+    component: () => import('@/views/Game')
   },
   {
     path: '/Matches',

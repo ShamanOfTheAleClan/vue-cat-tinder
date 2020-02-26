@@ -1,26 +1,6 @@
 <template>
   <div class="chat">
 
-    <AppNav
-      class="nav--shadowed"
-    >
-      <AppNavBtn
-        href="Matches"
-        logo="back"
-      ></AppNavBtn>
-
-      <AppNavBtn
-        href=""
-        logo="chat-companion"
-        :chatCompanionImage="currentlyChattingWith.url"
-        :chatCompanionName="currentlyChattingWith.breeds[0].name"
-        :chatProfileLink="true"
-      ></AppNavBtn>
-
-      <div class="link--nav"></div>
-
-    </AppNav>
-
     <ChatLog></ChatLog>
 
     <ChatInput
@@ -32,10 +12,8 @@
 </template>
 
 <script>
-import AppNav from '@/components/AppNav/AppNav'
-import AppNavBtn from '@/components/AppNav/children/AppNavBtn'
-import ChatInput from '@/components/ChatInput/ChatInput'
-import ChatLog from '@/components/ChatLog/ChatLog'
+import ChatInput from '@/components/molecules/ChatInput'
+import ChatLog from '@/components/molecules/ChatLog'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -44,8 +22,6 @@ export default {
     this.storeMatchToLocalStorage()
   },
   components: {
-    AppNav,
-    AppNavBtn,
     ChatInput,
     ChatLog
   },
@@ -62,7 +38,7 @@ export default {
 }
 </script>
 
-<style class="scss">
+<style class="scss" scoped>
   .nav--shadowed {
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
   }

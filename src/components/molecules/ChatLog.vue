@@ -52,12 +52,13 @@ export default {
       }
       const response = new Date(timePassed).getDay()
       return `${response} d. `
+      // yes, after 7 days it will show 0 d. again. Im aware
     }
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .chat-log {
     height: calc(100vh - 84px - 64px);
     display: flex;

@@ -1,26 +1,40 @@
 <template>
+
   <router-link
     :to="{name: href}"
     :class="classList2"
   >
-    <div :class="classList">
+
+    <div
+      class = "link--nav"
+      v-if="classExt === 'empty'"
+    >
+    </div>
+
+    <div
+      :class="classList"
+      v-else=""
+    >
       <img
-        v-if="logo === 'chat-companion'"
-        :src="chatCompanionImage"
+        v-if="classExt === 'chat-companion'"
+        :src="chatRecipientImage"
         class="chat-companion-image"
       >
     </div>
+
     <p
-      v-if="logo === 'chat-companion'"
+      v-if="classExt === 'chat-companion'"
       class="chat-companion-name"
     >
-      {{ chatCompanionName }}
+      {{ chatRecipientName }}
     </p>
+
   </router-link>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+
 export default {
   name: 'AppNavBtn',
   props: {
@@ -28,19 +42,29 @@ export default {
       type: String,
       default: undefined
     },
-    logo: {
+    classExt: {
+      type: String,
+      default: undefined,
+      validator: function (value) {
+        return [
+          'tinder',
+          'tinder--active',
+          'chat',
+          'chat--active',
+          'profile',
+          'profile--active',
+          'back',
+          'chat-companion',
+          'empty'
+
+        ].indexOf(value) !== -1
+      }
+    },
+    chatRecipientImage: {
       type: String,
       default: undefined
     },
-    active: {
-      type: Boolean,
-      default: false
-    },
-    chatCompanionImage: {
-      type: String,
-      default: undefined
-    },
-    chatCompanionName: {
+    chatRecipientName: {
       type: String,
       default: undefined
     },
@@ -53,8 +77,7 @@ export default {
     classList () {
       return [
         'link-logo',
-        `link-logo__${this.logo}`,
-        { activeLogoClass: this.active }
+        `link-logo__${this.classExt}`
       ]
     },
     classList2 () {
@@ -71,10 +94,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .link {
-  text-decoration: none;
-  color: unset;
 
   &--nav {
     width: 50px;
@@ -95,31 +116,31 @@ export default {
   width: 100%;
 
   &__tinder {
-    background-image: url("../../../assets/images/tinder-icon.svg");
+    background-image: url("../../assets/images/tinder-icon.svg");
 
     &--active {
-      background-image: url('../../../assets/images/tinder-icon--active.svg');
+      background-image: url('../../assets/images/tinder-icon--active.svg');
     }
   }
 
   &__chat {
-    background-image: url("../../../assets/images/chat-icon.svg");
+    background-image: url("../../assets/images/chat-icon.svg");
 
     &--active {
-      background-image: url('../../../assets/images/chat-icon--active.svg');
+      background-image: url('../../assets/images/chat-icon--active.svg');
     }
   }
 
   &__profile {
-    background-image: url('../../../assets/images/profile-icon.svg');
+    background-image: url('../../assets/images/profile-icon.svg');
 
     &--active {
-      background-image: url('../../../assets/images/profile-icon--active.svg');
+      background-image: url('../../assets/images/profile-icon--active.svg');
     }
   }
 
   &__back {
-    background-image: url('../../../assets/images/back.svg');
+    background-image: url('../../assets/images/back.svg');
     height: 30px;
     margin-top: 10px;
   }

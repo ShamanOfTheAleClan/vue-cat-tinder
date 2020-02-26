@@ -20,7 +20,7 @@
 <script>
 import { mapMutations } from 'vuex'
 export default {
-  name: 'SingleMatch',
+  name: 'MatchListSingle',
   props: {
     catObject: {
       type: Object,
@@ -50,7 +50,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .single-match {
     display: flex;
     align-items: center;

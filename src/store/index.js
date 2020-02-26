@@ -1,39 +1,24 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import router from '@/router'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: () => ({
-    profileToggleLink: undefined,
-    kittyProfileURL: '/kitty',
+    isInProfile: false,
     cats: [],
     catIndex: undefined,
     isFetching: false,
     needCats: true,
-    itsAMatch: false, // false
-    recentMatch: undefined, // undefined
+    itsAMatch: false,
+    recentMatch: undefined,
     newMatches: [],
     matches: [],
-    currentlyChattingWith: undefined,
-    catResponse: [
-      'Meow',
-      'Mau',
-      'Purrrr',
-      '...',
-      '*yawns*',
-      '*continues to ignore you*',
-      'Get back to your duties, mortal',
-      'MEOW',
-      '?'
-    ],
-    catIsResponding: false
+    currentlyChattingWith: undefined
 
   }),
   getters: {
-    profileToggleLink: state => state.profileToggleLink,
-    kittyProfileURL: state => state.kittyProfileURL,
+    isInProfile: state => state.isInProfile,
     cats: state => state.cats,
     catIndex: state => state.catIndex,
     isFetching: state => state.isFetching,
@@ -43,14 +28,12 @@ export default new Vuex.Store({
     newMatches: state => state.newMatches,
     oldMatches: state => state.matches,
     currentlyChattingWith: state => state.currentlyChattingWith,
-    chatMessages: state => state.currentlyChattingWith.chatMessages,
-    catResponse: state => state.catResponse,
-    catIsResponding: state => state.catIsResponding
+    chatMessages: state => state.currentlyChattingWith.chatMessages
   },
 
   mutations: {
-    setProfileToggleLink (state, payload) {
-      state.profileToggleLink = payload
+    setIsInProfile (state, payload) {
+      state.isInProfile = payload
     },
     setCats (state, payload) {
       state.cats = payload
@@ -60,6 +43,9 @@ export default new Vuex.Store({
     },
     setCatIndex (state, payload) {
       state.catIndex = payload
+    },
+    incrementCatIndex (state) {
+      state.catInex++
     },
     formatCats (state, index) {
       Vue.set(state.cats[index], 'age', undefined)
@@ -111,21 +97,10 @@ export default new Vuex.Store({
     },
     addToChatLog (state, payload) {
       state.currentlyChattingWith.chatMessages.push(payload)
-    },
-    setCatIsResponding (state, payload) {
-      state.catIsResponding = payload
     }
 
   },
   actions: {
-    toggleProfileToggleLink ({ commit }) {
-      if (router.currentRoute.path === '/') {
-        commit('setProfileToggleLink', 'MatchersBio')
-      }
-      if (router.currentRoute.path === '/kitty') {
-        commit('setProfileToggleLink', 'Matching')
-      }
-    },
     async getPussies ({ commit, getters, dispatch }) {
       if (!getters.needCats) return
       commit('setIsFetching', true)
@@ -170,38 +145,13 @@ export default new Vuex.Store({
         commit('addAffection', { payload: likesYou(), index: i })
       }
     },
-    incrementCatIndex ({ commit, state }) {
-      commit('setCatIndex', state.catIndex + 1)
-    },
-    judgeCat ({ getters, commit, dispatch }, judgement) {
-      if (getters.catIndex < 9) {
-        commit('setYouLike', judgement)
-        dispatch('checkMutualAffection', judgement)
-        dispatch('incrementCatIndex')
-      } else {
-        commit('setYouLike', judgement)
-        dispatch('checkMutualAffection', judgement)
-        commit('setNeedCats', true)
-        dispatch('getPussies')
-      }
-    },
-    checkMutualAffection ({ getters, commit, dispatch }, judgement) {
-      if (judgement === true &&
-        getters.cats[getters.catIndex].likesYou === getters.cats[getters.catIndex].youLike) {
-        commit('setRecentMatch', getters.cats[getters.catIndex])
-        commit('setNewMatchStatus', true)
-        commit('addToNewMatches', getters.cats[getters.catIndex])
-        commit('setItsAMatch', true)
-        dispatch('storeMatchToLocalStorage')
-      }
-    },
     fromNewMatchesToOld ({ commit }, cat) {
       commit('addToOldMatches', cat)
       commit('removeFromNewMatches', cat)
     },
     getMatchesFromServer ({ commit }) {
-      // lets assume you're getting them from server
-      // and not from local storage for now
+      // lets pretend our localStorage is the server
+
       const cache = JSON.parse(localStorage.getItem('matches'))
       if (cache) {
         commit('clearMatches')
@@ -219,29 +169,6 @@ export default new Vuex.Store({
         oldMatches: [...getters.oldMatches]
       }
       localStorage.setItem('matches', JSON.stringify(matches))
-    },
-    addChatMessageToLog ({ commit }, { sender, msg }) {
-      const payload = {
-        sender: sender,
-        message: msg,
-        timeStamp: new Date().getTime()
-      }
-      commit('addToChatLog', payload)
-    },
-    fakeCatResponse ({ getters, dispatch, commit }) {
-      // fake response within time period of 2s-7s
-      if (!getters.catisResponding) {
-        commit('setCatIsResponding', true)
-        setTimeout(() => {
-          const rng = Math.floor(Math.random() * getters.catResponse.length)
-          dispatch('addChatMessageToLog', {
-            sender: 0,
-            msg: getters.catResponse[rng]
-          })
-          dispatch('storeMatchToLocalStorage')
-          commit('setCatIsResponding', false)
-        }, Math.floor(Math.random() * 5000 + 2000))
-      }
     }
 
   }

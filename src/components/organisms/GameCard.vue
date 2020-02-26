@@ -1,71 +1,79 @@
 <template>
-  <router-link
-    :to="{name: profileToggleLink}"
-    class="link"
-    @click.native="toggleProfileToggleLink()"
+
+    <section
+      :class="classList1"
+      @click="toggleProfileView()"
     >
-    <section :class="classList1">
+
       <img
         :src="profilePic"
         :class="classList2"
       >
-      <slot />
+      <MatcherInfo
+        :name="cats[catIndex].breeds[0].name"
+        :age="cats[catIndex].age"
+        funFact="You both like napping"
+      >
+      </MatcherInfo>
+
+      <MatcherBio
+        v-if="isInProfile"
+      ></MatcherBio>
+
     </section>
-  </router-link>
+
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
+import MatcherBio from '@/components/molecules/MatcherBio'
+import MatcherInfo from '@/components/molecules/MatcherInfo'
 
 export default {
   name: 'Matcher',
-  mounted () {
-    this.toggleProfileToggleLink()
-  },
   props: {
     profilePic: {
       type: String,
       default: undefined
     }
   },
+  components: {
+    MatcherBio,
+    MatcherInfo
+  },
   computed: {
-    ...mapGetters({
-      profileToggleLink: 'profileToggleLink',
-      kittyProfileURL: 'kittyProfileURL'
-    }),
     classList1 () {
       return [
         'matcher',
-        { 'matcher--opened': this.$route.path === this.kittyProfileURL }
+        { 'matcher--opened': this.isInProfile }
       ]
     },
     classList2 () {
       return [
         'matcher__photo',
-        { 'matcher__photo--opened': this.$route.path === this.kittyProfileURL }
+        { 'matcher__photo--opened': this.isInProfile }
       ]
-    }
+    },
+    ...mapGetters({
+      isInProfile: 'isInProfile',
+      cats: 'cats',
+      catIndex: 'catIndex'
+    })
   },
   methods: {
+    toggleProfileView () {
+      this.isInProfile
+        ? this.setIsInProfile(false)
+        : this.setIsInProfile(true)
+    },
     ...mapMutations({
-      setProfileToggleLink: 'setProfileToggleLink'
-    }),
-    ...mapActions({
-      toggleProfileToggleLink: 'toggleProfileToggleLink'
+      setIsInProfile: 'setIsInProfile'
     })
   }
 }
 </script>
 
-<style lang="scss">
-  @keyframes enlarge {
-    from {
-      margin: 67px  auto 0 auto;
-    }
-    to {
-      margin: 0 auto;
-    }
-  }
+<style lang="scss" scoped>
   @keyframes shrink {
     from {
       margin: 0;
@@ -83,8 +91,7 @@ export default {
     overflow: hidden;
     border: 2px solid #eee;
     transition: 0.25s ease-in-out;
-    // animation-name: shrink;
-    // animation-duration: 0.25s;
+    color: #555;
 
     &--opened {
       margin: 0 auto;
@@ -93,9 +100,7 @@ export default {
       max-width: none;
       border: none;
       padding-bottom: 100px;
-      animation-name: enlarge;
-      animation-duration: 0.25s;
-      animation-fill-mode: both;
+      transform: translateY(-57px);
     }
 
     &__photo {

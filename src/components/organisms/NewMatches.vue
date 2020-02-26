@@ -2,18 +2,37 @@
   <div class='new-matches'>
     <h4 class="new-matches__headline">NEW MATCHES</h4>
     <div class="new-matches__list">
-      <slot />
+
+      <NewMatchesSingle
+        v-for="(match, index) of newMatches"
+        :key="index"
+        :imgHref="match.url"
+        :name="match.breeds[0].name"
+        :catObject="match"
+      ></NewMatchesSingle>
+
     </div>
   </div>
 </template>
 
 <script>
+import NewMatchesSingle from '@/components/molecules/NewMatchesSingle'
+import { mapGetters } from 'vuex'
+
 export default {
-  name: 'NewMatches'
+  name: 'NewMatches',
+  components: {
+    NewMatchesSingle
+  },
+  computed: {
+    ...mapGetters({
+      newMatches: 'newMatches'
+    })
+  }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .new-matches {
     padding: 20px 10px 20px 10px;
     border-bottom: 2px #eee solid;

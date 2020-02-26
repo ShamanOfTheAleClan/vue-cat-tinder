@@ -19,12 +19,24 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 export default {
   name: 'ChatInput',
   data () {
     return {
-      messageInput: undefined
+      messageInput: undefined,
+      catIsResponding: false,
+      catResponse: [
+        'Meow',
+        'Mau',
+        'Purrrr',
+        '...',
+        '*yawns*',
+        '*continues to ignore you*',
+        'Get back to your duties, mortal',
+        'MEOW',
+        '?'
+      ]
     }
   },
   props: {
@@ -39,19 +51,44 @@ export default {
   },
   methods: {
     ...mapActions({
-      addChatMessageToLog: 'addChatMessageToLog',
-      storeMatchToLocalStorage: 'storeMatchToLocalStorage',
-      fakeCatResponse: 'fakeCatResponse'
+      storeMatchToLocalStorage: 'storeMatchToLocalStorage'
+    }),
+    ...mapMutations({
+      addToChatLog: 'addToChatLog'
+
     }),
     sendMsg () {
       if (this.messageInput) {
-        this.addChatMessageToLog({
+        // addChatMessageToLog
+        const packet = {
           sender: 1,
-          msg: this.messageInput
-        })
+          message: this.messageInput,
+          timeStamp: new Date().getTime()
+        }
+        this.addToChatLog(packet)
         this.storeMatchToLocalStorage()
         this.messageInput = ''
-        this.fakeCatResponse()
+
+        // fake cat response
+        if (!this.catIsResponding) {
+          this.catIsResponding = true
+
+          setTimeout(() => {
+            // choose random message
+            const rng = Math.floor(Math.random() * this.catResponse.length)
+            const packet = {
+              sender: 0,
+              message: this.catResponse[rng],
+              timeStamp: new Date().getTime()
+            }
+            this.addToChatLog(packet)
+
+            this.storeMatchToLocalStorage()
+            this.catIsResponding = false
+            // set random response time in between
+            // 2s-7s
+          }, Math.floor(Math.random() * 5000 + 2000))
+        }
       }
     }
   }
@@ -59,7 +96,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .chat-input {
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
     position: fixed;

@@ -18,7 +18,7 @@
 <script>
 import { mapMutations, mapActions } from 'vuex'
 export default {
-  name: 'SingleNewMatch',
+  name: 'NewMatchesSingle',
   props: {
     imgHref: {
       type: String,
@@ -44,7 +44,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .new-match {
     display: flex;
     flex-direction: column;

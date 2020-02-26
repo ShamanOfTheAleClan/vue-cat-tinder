@@ -9,7 +9,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'MathersBio',
+  name: 'MatherBio',
   computed: {
     ...mapGetters({
       cats: 'cats',
@@ -19,18 +19,18 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .matcher__bio {
     font-family: "Montserrat";
     font-size: 18px;
     font-weight: 500;
     line-height: 1.5;
     color: #888;
+    margin: 0 20px;
   }
 
   .line {
     border-bottom: 1px solid #eee;
-    // width: 100%;
     margin: 30px -20px;
   }
 </style>

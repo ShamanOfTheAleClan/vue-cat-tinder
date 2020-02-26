@@ -11,26 +11,25 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'MatchingNav',
+  name: 'GameNav',
   computed: {
     ...mapGetters({
-      kittyProfileURL: 'kittyProfileURL',
+      isInProfile: 'isInProfile',
       itsAMatch: 'itsAMatch'
     }),
     classList () {
       return [
         'nav',
-        { 'nav--matching': this.$route.path !== this.kittyProfileURL },
-        { 'nav--inverted': this.$route.path === this.kittyProfileURL }
+        { 'nav--matching': !this.isInProfile },
+        { 'nav--inverted': this.isInProfile }
       ]
     }
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .nav {
-    transition: 0.5s cubic-bezier(0.41, -0.32, 0.62, 1.42);
 
     &--matching {
     border-bottom: none;
@@ -45,7 +44,6 @@ export default {
 
     &--inverted {
       position: fixed;
-
       bottom: 0;
       background-color: rgba(255, 255, 255, 0.75);
       right: 0;
